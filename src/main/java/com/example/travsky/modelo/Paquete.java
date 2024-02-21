@@ -20,36 +20,36 @@ public class Paquete {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "p_codigo")
-    private int codigo;
+    private int p_codigo;
     
     @Column(name = "p_nombre")
-    private String nombre;
+    private String p_nombre;
 
-    @OneToMany(mappedBy = "paquete")
+    @OneToMany(mappedBy = "paquetePaq")
     private List<ServiciosPaquetes> servPaq;
     
     public Paquete() {
     }
 
-    public Paquete(int codigo, String nombre) {
-        this.codigo = codigo;
-        this.nombre = nombre;
+    public Paquete(int p_codigo, String p_nombre) {
+        this.p_codigo = p_codigo;
+        this.p_nombre = p_nombre;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public int getP_codigo() {
+        return p_codigo;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setP_codigo(int p_codigo) {
+        this.p_codigo = p_codigo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getP_nombre() {
+        return p_nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setP_nombre(String p_nombre) {
+        this.p_nombre = p_nombre;
     }
 
     public List<ServiciosPaquetes> getServPaq() {
@@ -59,5 +59,5 @@ public class Paquete {
     public void setServPaq(List<ServiciosPaquetes> servPaq) {
         this.servPaq = servPaq;
     }
-    
+
 }

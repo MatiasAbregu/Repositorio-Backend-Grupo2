@@ -2,10 +2,10 @@ package com.example.travsky.modelo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.util.Date;
 
 /**
@@ -16,7 +16,6 @@ import java.util.Date;
 @Table(name = "persona")
 public class Persona {
  
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "dni")
     private int dni;
@@ -28,7 +27,8 @@ public class Persona {
     private String apellido;
     
     @Column(name = "fecha_nac")
-    private Date nacimiento;
+    @Temporal(TemporalType.DATE)
+    private Date fecha_nac;
     
     @Column(name = "direccion")
     private String direccion;
@@ -39,11 +39,11 @@ public class Persona {
     public Persona() {
     }
 
-    public Persona(int dni, String nombre, String apellido, Date nacimiento, String direccion, String nacionalidad) {
+    public Persona(int dni, String nombre, String apellido, Date fecha_nac, String direccion, String nacionalidad) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.nacimiento = nacimiento;
+        this.fecha_nac = fecha_nac;
         this.direccion = direccion;
         this.nacionalidad = nacionalidad;
     }
@@ -72,12 +72,12 @@ public class Persona {
         this.apellido = apellido;
     }
 
-    public Date getNacimiento() {
-        return nacimiento;
+    public Date getFecha_nac() {
+        return fecha_nac;
     }
 
-    public void setNacimiento(Date nacimiento) {
-        this.nacimiento = nacimiento;
+    public void setFecha_nac(Date fecha_nac) {
+        this.fecha_nac = fecha_nac;
     }
 
     public String getDireccion() {
@@ -95,5 +95,5 @@ public class Persona {
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
-    
+  
 }

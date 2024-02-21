@@ -22,36 +22,37 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "c_codigo")
-    private int codigo;
+    private int c_codigo;
     
     @OneToOne
     @JoinColumn(name = "c_dni")
     private Persona persona;
     
     @Column(name = "c_cel")
-    private String cel;
+    private String c_cel;
     
     @Column(name = "c_email")
-    private String email;
+    private String c_email;
 
     @OneToMany(mappedBy = "cliente")
     private List<Ventas> listadoVentas;
     
     public Cliente() {
     }
-    
-    public Cliente(int codigo, String cel, String email) {
-        this.codigo = codigo;
-        this.cel = cel;
-        this.email = email;
+
+    public Cliente(int c_codigo, Persona persona, String c_cel, String c_email) {
+        this.c_codigo = c_codigo;
+        this.persona = persona;
+        this.c_cel = c_cel;
+        this.c_email = c_email;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public int getC_codigo() {
+        return c_codigo;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setC_codigo(int c_codigo) {
+        this.c_codigo = c_codigo;
     }
 
     public Persona getPersona() {
@@ -62,27 +63,27 @@ public class Cliente {
         this.persona = persona;
     }
 
-    public String getCel() {
-        return cel;
+    public String getC_cel() {
+        return c_cel;
     }
 
-    public void setCel(String cel) {
-        this.cel = cel;
+    public void setC_cel(String c_cel) {
+        this.c_cel = c_cel;
     }
 
-    public String getEmail() {
-        return email;
+    public String getC_email() {
+        return c_email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setC_email(String c_email) {
+        this.c_email = c_email;
     }
 
-    public List<Ventas> getVentas() {
+    public List<Ventas> getListadoVentas() {
         return listadoVentas;
     }
 
-    public void setVentas(List<Ventas> listadoVentas) {
+    public void setListadoVentas(List<Ventas> listadoVentas) {
         this.listadoVentas = listadoVentas;
     }
   

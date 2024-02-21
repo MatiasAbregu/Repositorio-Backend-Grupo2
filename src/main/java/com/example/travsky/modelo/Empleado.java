@@ -21,17 +21,17 @@ public class Empleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "e_codigo")
-    private int codigo;
+    private int e_codigo;
 
     @OneToOne
-    @JoinColumn(name = "dni")
+    @JoinColumn(name = "e_dni")
     private Persona persona;
 
     @Column(name = "e_cel")
-    private String cel;
+    private String e_cel;
 
     @Column(name = "e_email")
-    private String email;
+    private String e_email;
 
     @Column(name = "cargo")
     private String cargo;
@@ -45,20 +45,21 @@ public class Empleado {
     public Empleado() {
     }
 
-    public Empleado(int codigo, String cel, String email, String cargo, int sueldo) {
-        this.codigo = codigo;
-        this.cel = cel;
-        this.email = email;
+    public Empleado(int e_codigo, Persona persona, String e_cel, String e_email, String cargo, int sueldo) {
+        this.e_codigo = e_codigo;
+        this.persona = persona;
+        this.e_cel = e_cel;
+        this.e_email = e_email;
         this.cargo = cargo;
         this.sueldo = sueldo;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public int getE_codigo() {
+        return e_codigo;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setE_codigo(int e_codigo) {
+        this.e_codigo = e_codigo;
     }
 
     public Persona getPersona() {
@@ -69,20 +70,20 @@ public class Empleado {
         this.persona = persona;
     }
 
-    public String getCel() {
-        return cel;
+    public String getE_cel() {
+        return e_cel;
     }
 
-    public void setCel(String cel) {
-        this.cel = cel;
+    public void setE_cel(String e_cel) {
+        this.e_cel = e_cel;
     }
 
-    public String getEmail() {
-        return email;
+    public String getE_email() {
+        return e_email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setE_email(String e_email) {
+        this.e_email = e_email;
     }
 
     public String getCargo() {
@@ -108,5 +109,5 @@ public class Empleado {
     public void setListadoVentas(List<Ventas> listadoVentas) {
         this.listadoVentas = listadoVentas;
     }
-
+    
 }

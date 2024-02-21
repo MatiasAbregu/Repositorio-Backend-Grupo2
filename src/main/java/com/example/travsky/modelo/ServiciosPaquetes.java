@@ -20,41 +20,41 @@ public class ServiciosPaquetes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "codigoSP")
-    private int codigo;
+    private int codigoSP;
     
     @ManyToOne
-    @JoinColumn(name = "p_codigo")
-    private Paquete paquete;
+    @JoinColumn(name = "codigoPaq")
+    private Paquete paquetePaq;
     
     @ManyToOne
-    @JoinColumn(name = "s_codigo")
-    private Servicio servicio;
+    @JoinColumn(name = "codigoServ")
+    private Servicio servicioServ;
 
     public ServiciosPaquetes() {
     }
 
-    public int getCodigo() {
-        return codigo;
+    public int getCodigoSP() {
+        return codigoSP;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setCodigoSP(int codigoSP) {
+        this.codigoSP = codigoSP;
     }
 
-    public Paquete getPaquete() {
-        return paquete;
+    public Paquete getPaquetePaq() {
+        return paquetePaq;
     }
 
-    public void setPaquete(Paquete paquete) {
-        this.paquete = paquete;
+    public void setPaquetePaq(Paquete paquetePaq) {
+        this.paquetePaq = paquetePaq;
     }
 
-    public Servicio getServicio() {
-        return servicio;
+    public Servicio getServicioServ() {
+        return servicioServ;
     }
 
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
+    public void setServicioServ(Servicio servicioServ) {
+        this.servicioServ = servicioServ;
     }
  
 }
