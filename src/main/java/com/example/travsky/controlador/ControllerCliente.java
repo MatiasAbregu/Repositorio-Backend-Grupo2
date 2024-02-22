@@ -5,7 +5,9 @@ import com.example.travsky.modelo.Cliente;
 import com.example.travsky.modelo.Persona;
 import com.example.travsky.repositorios.ClienteRepositorio;
 import com.example.travsky.repositorios.PersonaRepositorio;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -54,14 +56,14 @@ public class ControllerCliente {
         return clienteRepositorio.save(request);
     }
 
-    @PutMapping("/clientes/{id}")
-    private ResponseEntity<Cliente> updateClientAndOrPerson(@PathVariable int id ,@RequestBody ClientePersonaRequest request) {
+    @PutMapping("/clientes-persona/{id}")
+    private ResponseEntity<Cliente> updateClientAndPerson(@PathVariable int id ,@RequestBody ClientePersonaRequest request) {
+        
         Cliente c = clienteRepositorio.findById(id).orElseThrow();
         c.setC_cel(request.getCliente().getC_cel());
         c.setC_email(request.getCliente().getC_email());
-        
-        Persona p = c.getPersona();
-        p.setDni(request.getPersona().getDni());
+
+        Persona p = personaRepositorio.findById(request.getPersona().getDni()).orElseThrow();
         p.setNombre(request.getPersona().getNombre());
         p.setApellido(request.getPersona().getApellido());
         p.setFecha_nac(request.getPersona().getFecha_nac());
@@ -70,14 +72,32 @@ public class ControllerCliente {
         
         personaRepositorio.save(p);
         c.setPersona(p);
+        
         Cliente cA = clienteRepositorio.save(c);
         
         return ResponseEntity.ok(cA);
     }
+    
+    @PutMapping("/clientes/{id}")
+    private ResponseEntity<Cliente> updateClient(@PathVariable int id, @RequestBody Cliente request){
+       Cliente c = clienteRepositorio.findById(id).orElseThrow();
+       Persona p = personaRepositorio.findById(request.getPersona().getDni()).orElseThrow();
+       
+       c.setPersona(p);
+       Cliente cA = clienteRepositorio.save(c);
+       
+       return ResponseEntity.ok(cA);
+    }
 
     @DeleteMapping("/clientes/{id}")
-    private String hol() {
-        return "";
+    private ResponseEntity<Map<String, Boolean>> deleteClient (@PathVariable int id) {
+        Cliente c = clienteRepositorio.findById(id).orElseThrow();
+        clienteRepositorio.delete(c);
+        
+        Map<String, Boolean> respuesta = new HashMap<>();
+        respuesta.put("deleted", Boolean.TRUE);
+        
+        return ResponseEntity.ok(respuesta);
     }
 
 }
