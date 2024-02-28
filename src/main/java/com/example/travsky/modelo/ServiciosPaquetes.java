@@ -1,5 +1,6 @@
 package com.example.travsky.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,12 +24,14 @@ public class ServiciosPaquetes {
     private int codigoSP;
     
     @ManyToOne
-    @JoinColumn(name = "codigoPaq")
-    private Paquete paquetePaq;
+    @JoinColumn(name = "codigo_paq")
+    @JsonIgnore
+    private Paquete paquete;
     
     @ManyToOne
-    @JoinColumn(name = "codigoServ")
-    private Servicio servicioServ;
+    @JoinColumn(name = "codigo_serv")
+    @JsonIgnore
+    private Servicio servicio;
 
     public ServiciosPaquetes() {
     }
@@ -41,20 +44,20 @@ public class ServiciosPaquetes {
         this.codigoSP = codigoSP;
     }
 
-    public Paquete getPaquetePaq() {
-        return paquetePaq;
+    public Paquete getPaquete() {
+        return paquete;
     }
 
-    public void setPaquetePaq(Paquete paquetePaq) {
-        this.paquetePaq = paquetePaq;
+    public void setPaquete(Paquete paquete) {
+        this.paquete = paquete;
     }
 
-    public Servicio getServicioServ() {
-        return servicioServ;
+    public Servicio getServicio() {
+        return servicio;
     }
 
-    public void setServicioServ(Servicio servicioServ) {
-        this.servicioServ = servicioServ;
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
     }
  
 }

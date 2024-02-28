@@ -1,5 +1,7 @@
 package com.example.travsky.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +27,8 @@ public class Paquete {
     @Column(name = "p_nombre")
     private String p_nombre;
 
-    @OneToMany(mappedBy = "paquetePaq")
+    @OneToMany(mappedBy = "paquete")
+    @JsonIgnore
     private List<ServiciosPaquetes> servPaq;
     
     public Paquete() {
