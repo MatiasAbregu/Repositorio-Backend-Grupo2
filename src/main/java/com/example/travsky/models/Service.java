@@ -4,6 +4,7 @@ import com.example.travsky.views.ServiceView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 import lombok.*;
 
@@ -43,19 +44,20 @@ public class Service {
     @Column(name = "date")
     @JsonView({ServiceView.DetailedService.class})
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private LocalDate date;
     
     @Column(name = "type")
     @JsonView({ServiceView.SimpleService.class, ServiceView.DetailedService.class})
     private String type;
     
     @Column(name = "price")
-    @JsonView({ServiceView.SimpleService.class})
+    @JsonView({ServiceView.SimpleService.class, ServiceView.DetailedService.class})
     private float price;
 
     @OneToMany(mappedBy = "service")
     @JsonIgnore
     private List<ServicePackage> listPackage;
     
-    
+    @Transient
+    private int idSxP;
 }

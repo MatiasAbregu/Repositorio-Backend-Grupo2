@@ -1,6 +1,6 @@
 package com.example.travsky.controllers;
 
-import com.example.travsky.dto.ServiciosDelPaquete;
+import com.example.travsky.dto.packageWithServices;
 import com.example.travsky.models.Package;
 import com.example.travsky.models.Service;
 import com.example.travsky.models.ServicePackage;
@@ -8,98 +8,45 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.travsky.repositories.PackageRepository;
-import com.example.travsky.repositories.ServicePackageRepository;
+import com.example.travsky.services.PackageService;
+import org.springframework.http.HttpStatusCode;
 
 /**
  * @author Matias
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ControllerPackages {
-    
+
     @Autowired
-    private PackageRepository packageRepository;
-    
-    @Autowired
-    private ServicePackageRepository spRepositorio;
-    
-    @GetMapping("/paquetes")
-    private ResponseEntity<List<ServiciosDelPaquete>> getAllPackages(){
-        List<Package> pList = packageRepository.findAll();
-        
-        List<ServiciosDelPaquete> sdpLista = new ArrayList<>();
-        for(Package p : pList){
-            ServiciosDelPaquete sdp = new ServiciosDelPaquete();
-            sdp.setName(p.getName());
-            
-            List<Service> listaServicios = new ArrayList<>();
-            for(ServicePackage sp : p.getListServices()){
-                Service s = new Service(sp.getService().getCode(), sp.getService().getName(), 
-                        sp.getService().getDesc(), sp.getService().getImg(), sp.getService().getDestination(), sp.getService().getDate(), 
-                        sp.getService().getType(), sp.getService().getPrice(), null);
-                listaServicios.add(s);
-            }
-            sdp.setService(listaServicios);
-            sdpLista.add(sdp);
-        }
-        
-        return ResponseEntity.ok(sdpLista);
-    }
-    
-    @GetMapping("/paquetes/{id}")
-    private ResponseEntity<ServiciosDelPaquete> getPackageById(@PathVariable int id){
-        Package p = packageRepository.findById(id).orElseThrow();
-        
-        ServiciosDelPaquete sdp = new ServiciosDelPaquete();
-        sdp.setName(p.getName());
-        
-        List<Service> listaServicios = new ArrayList<>();
-        for(ServicePackage sp : p.getListServices()){
-                Service s = new Service(sp.getService().getCode(), sp.getService().getName(), 
-                        sp.getService().getDesc(), sp.getService().getImg(), sp.getService().getDestination(), sp.getService().getDate(), 
-                        sp.getService().getType(), sp.getService().getPrice(), null);
-                listaServicios.add(s);
-            }
-            sdp.setService(listaServicios);
-       
-        return ResponseEntity.ok(sdp);
+    private PackageService packageService;
+
+    @GetMapping("/packages")
+    private ResponseEntity<List<packageWithServices>> getAllPackages() {
+        return ResponseEntity.ok(packageService.getAllPackages());
     }
 
-    @PostMapping("/paquetes")
-    private Package createPackage(@RequestBody ServiciosDelPaquete request){
-        Package p = new Package();
-        p.setName(request.getName());
-        packageRepository.save(p);
-        
-        for(Service s : request.getService()){
-            ServicePackage sp = new ServicePackage();
-            sp.setPackageName(p);
-            sp.setService(s);
-            
-            spRepositorio.save(sp);
+    @GetMapping("/packages/{id}")
+    private ResponseEntity<packageWithServices> getPackageById(@PathVariable int id) {
+        return ResponseEntity.ok(packageService.getPackageById(id));
+    }
+
+    @PostMapping("/auth/packages")
+    private ResponseEntity<Package> createPackage(@RequestBody packageWithServices request) {
+        try {
+            return ResponseEntity.ok(packageService.createPackage(request));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(400)).build();
         }
-        
-        return p;
     }
-    
-    @PutMapping("/paquetes/{id}")
-    private ResponseEntity<Package> updatePackage(@PathVariable int id, @RequestBody ServiciosDelPaquete request){ //ACTUALIZAR NOMBRE Y CANTIDAD DE SERVICIOS INTERIOR (NO EL SERVICIO)
-        Package p = packageRepository.findById(id).orElseThrow();
-        p.setName(request.getName());
-        Package pA = packageRepository.save(p);
-        
-        return ResponseEntity.ok(pA);
+
+    @PutMapping("/auth/packages/{id}")
+    private ResponseEntity<Package> updatePackage(@PathVariable int id, @RequestBody packageWithServices request) {
+        return ResponseEntity.ok(packageService.updatePackage(id, request));
     }
-    
-    @DeleteMapping("/paquetes/{id}")
-    private ResponseEntity<Map<String, Boolean>> deletePackage(@PathVariable int id){ //AGREGAR CASCADE, AL ELIMINAR PAQUETE SE ELIMINA SUS RELACIONES EN SERVICIOXPAQUETES
-        Package p = packageRepository.findById(id).orElseThrow();
-        packageRepository.delete(p);
-        
-        Map<String,Boolean> response = new HashMap<>();
-        response.put("Deleted", Boolean.TRUE);
-        
-        return ResponseEntity.ok(response);
-    } 
+
+    @DeleteMapping("/auth/packages/{id}")
+    private ResponseEntity<Map<String, Boolean>> deletePackage(@PathVariable int id) {
+        return ResponseEntity.ok(packageService.deletePackage(id));
+    }
 }

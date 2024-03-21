@@ -1,93 +1,71 @@
 package com.example.travsky.controllers;
 
-import com.example.travsky.dto.EmployeePersonRequest;
 import com.example.travsky.models.Employee;
-import com.example.travsky.models.Person;
+import com.example.travsky.models.Token;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.travsky.repositories.EmployeeRepository;
-import com.example.travsky.repositories.PersonRepository;
+import com.example.travsky.services.EmployeeService;
+import com.example.travsky.services.TokenService;
+import com.example.travsky.views.EmployeeView;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.http.HttpStatusCode;
 
 /**
  * @author Matias
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ControllerEmployee {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
 
     @Autowired
-    private PersonRepository personRepository;
+    private TokenService tokenService;
 
-    @GetMapping("/empleados")
-    private List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();     
+    @GetMapping("/auth/get-employees")
+    @JsonView(EmployeeView.SimpleEmployee.class)
+    private ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
+    }
+    
+    @GetMapping("/auth/employees")
+    private ResponseEntity<List<Employee>> getAllEmployeesWithAllInfo(){
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-    @GetMapping("/empleados/{id}")
+    @GetMapping("/auth/employees/{id}")
     private ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
-        Employee e = employeeRepository.findById(id).orElseThrow();
-        return ResponseEntity.ok(e);
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
-    @PostMapping("/empleados-persona")
-    private Employee createEmployeeAndPerson(@RequestBody EmployeePersonRequest request) {
-        Person p = request.getPerson();
-        personRepository.save(p);
-        
-        Employee e = request.getEmployee();
-        e.setPerson(p);
-        return employeeRepository.save(e);
+    @PostMapping("/auth/employees")
+    private ResponseEntity<?> createEmployee(@RequestBody Employee request) {
+        try {
+            return ResponseEntity.ok(tokenService.registerEmployee(request, 0));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(e.getMessage());
+        }
     }
 
-    @PostMapping("/empleados")
-    private Employee createEmployee(@RequestBody Employee request) {
-        return employeeRepository.save(request);
+    @PostMapping("/auth/employees/{dni}")
+    private Token createEmployeeAndUpdateUser(@PathVariable int dni, @RequestBody Employee request) {
+        return tokenService.registerEmployee(request, dni);
     }
 
-    @PutMapping("/empleados-persona/{id}")
-    private ResponseEntity<Employee> updateEmployeeAndPerson(@PathVariable int id, @RequestBody EmployeePersonRequest request) {
-        Employee e = employeeRepository.findById(id).orElseThrow();
-        e.setJob(request.getEmployee().getJob());
-        e.setIncome(request.getEmployee().getIncome());
-
-        Person p = personRepository.findById(request.getPerson().getDni()).orElseThrow();
-        p.setFistName(request.getPerson().getFistName());
-        p.setLastName(request.getPerson().getLastName());
-        p.setBirthdate(request.getPerson().getBirthdate());
-        p.setAddress(request.getPerson().getAddress());
-        p.setNationality(request.getPerson().getNationality());
-
-        personRepository.save(p);
-        e.setPerson(p);
-        Employee eA = employeeRepository.save(e);
-
-        return ResponseEntity.ok(eA);
-    }
-
-    @PutMapping("/empleados/{id}")
+    @PutMapping("/auth/employees/{id}")
     private ResponseEntity<Employee> updateEmployee(@PathVariable int id, @RequestBody Employee request) {
-        Employee e = employeeRepository.findById(id).orElseThrow();
-        Person p = personRepository.findById(request.getPerson().getDni()).orElseThrow();
-
-        e.setPerson(p);
-        Employee eA = employeeRepository.save(e);
-
-        return ResponseEntity.ok(eA);
+        return ResponseEntity.ok(employeeService.updateEmployee(id, request));
     }
 
-    @DeleteMapping("/empleados/{id}")
-    private ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable int id) {
-        Employee e = employeeRepository.findById(id).orElseThrow();
-        employeeRepository.delete(e);
-
-        Map<String, Boolean> respuesta = new HashMap<>();
-        respuesta.put("deleted", Boolean.TRUE);
-
-        return ResponseEntity.ok(respuesta);
+    @DeleteMapping("/auth/employees/{id}")
+    private ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable int id, @RequestParam int operation) {
+        try {
+            return ResponseEntity.ok(employeeService.deleteEmployee(id, operation));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(400)).build();
+        }
     }
 }

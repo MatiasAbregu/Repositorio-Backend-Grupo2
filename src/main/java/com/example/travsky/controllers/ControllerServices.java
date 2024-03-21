@@ -7,64 +7,50 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.travsky.repositories.ServiceRepository;
+import com.example.travsky.services.ServiceService;
 
 /**
  * @author Matias
  */
-
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
-public class ControllerServices {
-
+@CrossOrigin(origins = "http://localhost:5173")
+public class ControllerServices {  
+    
     @Autowired
-    private ServiceRepository serviceRepository;
-
-    @GetMapping("/servicios")
+    private ServiceService serviceService;
+    
+    @GetMapping("/services")
     @JsonView(ServiceView.SimpleService.class)
     private ResponseEntity<List<Service>> getAllTypeServices(@RequestParam(required = false) String type) {
-        if (type != null) {
-            return ResponseEntity.ok(serviceRepository.findByType(Character.toUpperCase(type.charAt(0)) + type.substring(1)));
-        } else {
-            return ResponseEntity.ok(serviceRepository.findAll());
-        }
+        return ResponseEntity.ok(serviceService.getServicesByType(type));
     }
-
-    @GetMapping("/servicios/{id}")
+    
+    @GetMapping("/auth/services-detailed")
+    @JsonView(ServiceView.DetailedService.class)
+    private ResponseEntity<List<Service>> getDetailedServices() {
+        return ResponseEntity.ok(serviceService.getDetailedServices());
+    }
+    
+    @GetMapping("/services/{id}")
     @JsonView(ServiceView.DetailedService.class)
     private ResponseEntity<Service> getServiceById(@PathVariable int id) {
-        return ResponseEntity.ok(serviceRepository.findById(id).orElseThrow());
+        return ResponseEntity.ok(serviceService.findServiceById(id));
     }
-
-    @PostMapping("/servicios")
+    
+    @PostMapping("/auth/services")
     @JsonView(ServiceView.DetailedService.class)
-    private Service createOrUpdateService(@RequestBody Service request) {
-        return serviceRepository.save(request);
+    private ResponseEntity<Service> createService(@RequestBody Service request) {
+        return ResponseEntity.ok(serviceService.createService(request));
     }
-
-    @PutMapping("/servicios/{id}")
+    
+    @PutMapping("/auth/services/{id}")
     @JsonView(ServiceView.DetailedService.class)
     private ResponseEntity<Service> updateService(@PathVariable int id, @RequestBody Service request) {
-        Service s = serviceRepository.findById(id).orElseThrow();
-        s.setName(request.getName());
-        s.setDesc(request.getDesc());
-        s.setDestination(request.getDestination());
-        s.setDate(request.getDate());
-        s.setType(request.getType());
-        s.setPrice(request.getPrice());
-
-        Service sA = serviceRepository.save(s);
-        return ResponseEntity.ok(sA);
+        return ResponseEntity.ok(serviceService.updateService(id, request));
     }
-
-    @DeleteMapping("/servicios/{id}")
+    
+    @DeleteMapping("/auth/services/{id}")
     private ResponseEntity<Map<String, Boolean>> deleteService(@PathVariable int id) {
-        Service s = serviceRepository.findById(id).orElseThrow();
-        serviceRepository.delete(s);
-
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(serviceService.deleteService(id));
     }
 }

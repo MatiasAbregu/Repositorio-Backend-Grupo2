@@ -1,7 +1,6 @@
 package com.example.travsky.models;
 
 import jakarta.persistence.*;
-import java.util.List;
 import lombok.*;
 
 /**
@@ -23,8 +22,5 @@ public class Client {
     @OneToOne
     @JoinColumn(name = "c_dni")
     private Person person;
-
-    @OneToMany(mappedBy = "client")
-    private List<Sales> salesList;
     
 }

@@ -1,7 +1,7 @@
 package com.example.travsky.models;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import lombok.*;
 
 /**
@@ -22,7 +22,7 @@ public class Sales {
     
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private LocalDate date;
     
     @Column(name = "payment")
     private String payment;
