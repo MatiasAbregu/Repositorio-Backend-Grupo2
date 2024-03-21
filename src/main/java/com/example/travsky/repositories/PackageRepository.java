@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author Matias
+ * Repositorio para la gestión de paquetes en la base de datos.
+ * Proporciona métodos para realizar operaciones CRUD en la entidad Package.
  */
-
 @Repository
 public interface PackageRepository extends JpaRepository<Package, Integer>{
     

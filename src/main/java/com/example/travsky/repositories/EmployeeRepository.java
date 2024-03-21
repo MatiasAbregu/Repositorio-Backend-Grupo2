@@ -4,7 +4,8 @@ import com.example.travsky.models.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * @author Matias
+ * Repositorio para la gestión de empleados en la base de datos.
+ * Proporciona métodos para realizar operaciones CRUD en la entidad Employee.
  */
 public interface EmployeeRepository extends JpaRepository<Employee, Integer>{
     

@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * @author Matias
+ * Clase en la que se define reglas de autorización y configuración de autenticación utilizando Spring Security.
  */
 @Configuration
 @EnableWebSecurity
@@ -24,11 +24,18 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationProvider authProvider;
     
+     /**
+     * Configura las reglas de seguridad para diferentes rutas de la aplicación, desactivación del cross site request forgery y diferentes autenticaciones.
+     * Todo a través de JWT.
+     * @param http: Objeto HttpSecurity para configurar la seguridad de la aplicación.
+     * @return SecurityFilterChain: Objeto que retornará.
+     * @throws Exception: Por si hay algún error al momento de configurar la seguridad.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authRequest
+                .authorizeHttpRequests(authRequest 
                         -> authRequest.requestMatchers("/auth/services/**").hasAnyAuthority("Admin", "Employee").
                                 requestMatchers("/auth/employees/**").hasAuthority("Admin").
                                 requestMatchers("/auth/get-employee").hasAnyAuthority("Admin", "Employee", "User").

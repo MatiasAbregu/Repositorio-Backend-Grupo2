@@ -12,12 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author matia
+ * Servicio para la gestión de ventas en la aplicación.
  */
 @Service
 public class SalesService {
@@ -37,15 +36,30 @@ public class SalesService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    /**
+     * Obtiene todas las ventas registradas en la base de datos.
+     * @return Lista de ventas.
+     */
     public List<Sales> getAllSales() {
         return salesRepository.findAll();
     }
 
+    /**
+     * Obtiene una venta específica por su ID.
+     * @param id ID de la venta a obtener.
+     * @return La venta encontrada.
+     */
     public Sales getSaleById(int id) {
         Sales s = salesRepository.findById(id).orElseThrow();
         return s;
     }
 
+    /**
+     * Crea una nueva venta.
+     * Verifica si la venta es de un servicio o un paquete.
+     * @param request Información de la venta a crear.
+     * @return La venta creada.
+     */
     @Transactional
     public Sales createSale(Sales request) {
         Sales s = new Sales();
@@ -73,6 +87,12 @@ public class SalesService {
         return sCreated;
     }
     
+    /**
+     * Actualiza una venta existente.
+     * @param id ID de la venta a actualizar.
+     * @param request Información actualizada de la venta.
+     * @return La venta actualizada.
+     */
     @Transactional
     public Sales updateSale(int id, Sales request){
         Sales s = salesRepository.findById(id).orElseThrow();
@@ -100,6 +120,11 @@ public class SalesService {
         return sUpdated;
     }
     
+    /**
+     * Elimina una venta existente.
+     * @param id ID de la venta a eliminar.
+     * @return Un mensaje de confirmación y un indicador de éxito.
+     */
     public Map<String, Boolean> deleteSale(int id){
         Sales s = salesRepository.findById(id).orElseThrow();
         salesRepository.delete(s);

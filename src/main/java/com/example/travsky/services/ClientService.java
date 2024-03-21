@@ -16,9 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author matia
+ * Servicio para la gestión de clientes en la aplicación.
  */
-
 @Service
 public class ClientService {
     
@@ -40,15 +39,31 @@ public class ClientService {
     @Autowired
     private SalesRepository salesRepository;
     
+    /**
+     * Obtiene todos los clientes registrados en la base de datos.
+     * @return Lista de todos los clientes.
+     */
     public List<Client> getAllClients(){
        return clientRepository.findAll();
     }
     
+    /**
+     * Obtiene un cliente por su ID.
+     * @param id ID del cliente a obtener.
+     * @return El cliente encontrado.
+     * @throws RuntimeException si el cliente no existe.
+     */
     public Client getClientById(int id){
         Client c = clientRepository.findById(id).orElseThrow();
         return c;
     }
     
+    /**
+     * Crea una nueva venta asociada a un cliente y crea el cliente en caso de que no exista.
+     * Además se comprueba si la venta es de un paquete o un servicio.
+     * @param request La información de la venta a crear.
+     * @return La venta creada.
+     */
     @Transactional
     public Sales createSale(Sales request){
         Person p = personRepository.findById(request.getClient().getPerson().getDni()).orElseThrow();

@@ -10,13 +10,12 @@ import com.example.travsky.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author matia
+ * Servicio para la gestión de registro e inicio de sesión en la aplicación.
  */
 @Service
 public class TokenService {
@@ -39,6 +38,12 @@ public class TokenService {
     @Autowired
     private AuthenticationManager authManager;
 
+    /**
+     * Autentica a un usuario y genera un token de acceso.
+     * @param request Datos de usuario para la autenticación.
+     * @return El token de acceso generado.
+     * @throws RuntimeException Si la autenticación falla o el usuario no existe.
+     */
     public Token login(User request) {
         authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
@@ -47,6 +52,12 @@ public class TokenService {
         return new Token(token);
     }
 
+    /**
+     * Registra a una persona en el sistema, con un DNI y un username irrepetible sino tira error.
+     * @param request Información de la persona a registrar.
+     * @return El token de acceso generado para la persona registrada.
+     * @throws RuntimeException Si la persona o el usuario ya existen en el sistema.
+     */
     @Transactional
     public Token register(Person request) {
         Person p = personRepository.findById(request.getDni()).orElse(null);
@@ -72,6 +83,13 @@ public class TokenService {
         }
     }
 
+    /**
+     * Registra a un empleado en el sistema.
+     * @param request Información del empleado a registrar.
+     * @param dni DNI, en caso de recibir, de una persona ya existente en el sistema la cual se quiere asociar al nuevo empleado.
+     * @return El token de acceso generado para el empleado registrado.
+     * @throws RuntimeException Si la persona asociada al empleado ya existe en el sistema.
+     */
     @Transactional
     public Token registerEmployee(Employee request, int dni) {
         Token t = new Token();

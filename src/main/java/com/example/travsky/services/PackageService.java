@@ -14,9 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author matia
+ * Servicio para la gestión de paquetes en la aplicación.
  */
-
 @Service
 public class PackageService {
 
@@ -29,6 +28,10 @@ public class PackageService {
     @Autowired
     private ServiceRepository serviceReposity;
 
+    /**
+     * Obtiene todos los paquetes de la base de datos con sus servicios asociados.
+     * @return Lista de paquetes con sus servicios asociados.
+     */
     public List<packageWithServices> getAllPackages() {
         List<com.example.travsky.models.Package> pList = packageRepository.findAll();
 
@@ -41,7 +44,7 @@ public class PackageService {
             for (ServicePackage sp : p.getListServices()) {
                 com.example.travsky.models.Service s = new com.example.travsky.models.Service(sp.getService().getCode(), sp.getService().getName(),
                         sp.getService().getDesc(), sp.getService().getImg(), sp.getService().getDestination(), sp.getService().getDate(),
-                        sp.getService().getType(), sp.getService().getPrice(), null, sp.getCode());
+                        sp.getService().getType(), sp.getService().getPrice(), sp.getCode());
                 servicesOfPackage.add(s);
             }
             pws.setServices(servicesOfPackage);
@@ -51,6 +54,11 @@ public class PackageService {
         return pwsList;
     }
 
+    /**
+     * Obtiene un paquete específico por su ID con los servicios asociados.
+     * @param id ID del paquete a obtener.
+     * @return El paquete con sus servicios asociados.
+     */
     public packageWithServices getPackageById(int id) {
         com.example.travsky.models.Package p = packageRepository.findById(id).orElseThrow();
 
@@ -62,7 +70,7 @@ public class PackageService {
         for (ServicePackage sp : p.getListServices()) {
             com.example.travsky.models.Service s = new com.example.travsky.models.Service(sp.getService().getCode(), sp.getService().getName(),
                     sp.getService().getDesc(), sp.getService().getImg(), sp.getService().getDestination(), sp.getService().getDate(),
-                    sp.getService().getType(), sp.getService().getPrice(), null, sp.getCode());
+                    sp.getService().getType(), sp.getService().getPrice(), sp.getCode());
             servicesList.add(s);
         }
         pws.setServices(servicesList);
@@ -70,6 +78,11 @@ public class PackageService {
         return pws;
     }
 
+    /**
+     * Crea un nuevo paquete con los servicios asociados.
+     * @param request Información del paquete y sus servicios.
+     * @return El paquete creado.
+     */
     @Transactional
     public com.example.travsky.models.Package createPackage(packageWithServices request) {
         com.example.travsky.models.Package p = new com.example.travsky.models.Package();
@@ -92,6 +105,13 @@ public class PackageService {
         }
     }
 
+    /**
+     * Actualiza la información de un paquete existente y sus servicios asociados.
+     * Se puede crear múltiples entidades del mismo servicio, en caso de necesitar borrar una, se usara idSxP anteriormente mencionado en la entidad Service.
+     * @param id ID del paquete a actualizar.
+     * @param request Información actualizada del paquete y sus servicios.
+     * @return El paquete actualizado.
+     */
     @Transactional
     public com.example.travsky.models.Package updatePackage(int id, packageWithServices request) {
         com.example.travsky.models.Package p = packageRepository.findById(id).orElseThrow();
@@ -127,6 +147,11 @@ public class PackageService {
         return pUpdated;
     }
 
+    /**
+     * Elimina un paquete existente y sus servicios asociados.
+     * @param id ID del paquete a eliminar.
+     * @return Un mensaje de confirmación y un indicador de éxito.
+     */
     @Transactional
     public Map<String, Boolean> deletePackage(int id) {
         com.example.travsky.models.Package p = packageRepository.findById(id).orElseThrow();

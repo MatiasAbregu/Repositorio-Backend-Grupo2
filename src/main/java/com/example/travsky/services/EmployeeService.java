@@ -18,9 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author matia
+ * Servicio para la gestión de empleados en la aplicación.
  */
-
 @Service
 public class EmployeeService {
     
@@ -39,15 +38,31 @@ public class EmployeeService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
+    /**
+     * Obtiene todos los empleados registrados en la base de datos.
+     * @return Lista de todos los empleados.
+     */
     public List<Employee> getAllEmployees(){
         return employeeRepository.findAll();
     }
     
+    /**
+     * Obtiene un empleado por su ID.
+     * @param id ID del empleado a obtener.
+     * @return El empleado encontrado.
+     * @throws RuntimeException si el empleado no existe.
+     */
     public Employee getEmployeeById(int id){
         Employee employee = employeeRepository.findById(id).orElseThrow();
         return employee;
     }
     
+    /**
+     * Actualiza la información de un empleado existente.
+     * @param id ID del empleado a actualizar.
+     * @param request La información actualizada del empleado.
+     * @return El empleado actualizado.
+     */
     @Transactional
     public Employee updateEmployee(int id, Employee request){
         Employee e = employeeRepository.findById(id).orElseThrow();
@@ -79,6 +94,14 @@ public class EmployeeService {
         return eUpdated;
     }
     
+    /**
+     * Elimina un empleado existente.
+     * @param id ID del empleado a eliminar.
+     * @param operation Operación a realizar para la eliminación (1 o 2).
+     * 1. Se eliminará el empleado y sus ventas dejando su usuario con rol "User".
+     * 2. Se eliminará el empleado y su usuario.
+     * @return Un mensaje de confirmación y un indicador de éxito.
+     */
     @Transactional
     public Map<String, Boolean> deleteEmployee(int id, int operation){
         Map<String, Boolean> response = new HashMap<>();

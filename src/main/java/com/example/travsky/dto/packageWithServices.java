@@ -7,7 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author matia
+ * DTO que representa un paquete con sus servicios asociados.
+ * Su función es lograr manipular ServicePackage y Package en una solicitud.
  */
 
 @AllArgsConstructor
@@ -15,6 +16,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class packageWithServices {
     
+    // El paquete a usar.
     private com.example.travsky.models.Package packageInfo;
+    
+    // Los servicios asociados al paquete.
     private List<Service> services;
 }
