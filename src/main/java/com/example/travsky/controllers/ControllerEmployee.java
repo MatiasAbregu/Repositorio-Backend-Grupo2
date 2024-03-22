@@ -85,7 +85,7 @@ public class ControllerEmployee {
      * @return El token generado para el empleado creado.
      */
     @PostMapping("/auth/employees/{dni}")
-    private Token createEmployeeAndLinkWitExistPerson(@PathVariable int dni, @RequestBody Employee request) {
+    private Token createEmployeeAndLinkWithExistPerson(@PathVariable int dni, @RequestBody Employee request) {
         return tokenService.registerEmployee(request, dni);
     }
 
