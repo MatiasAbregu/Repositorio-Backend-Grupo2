@@ -43,5 +43,5 @@ Agradecer principalmente a Todo Code por dejarnos participar de esta experiencia
 Y además agradecer a mi compañero por su breve pero valiosa colaboración al proyecto. ¡Muchas gracias a todos!
 
 ## Equipo: Patito Software | Grupo N°2
-  - Mateo Iriso (@MateoIr)
-  - Matias Abregú (@MatiasAbregu)
+  - Mateo Iriso (<a href="https://github.com/MateoIr">@MateoIr</a>)
+  - Matias Abregú (<a href="https://github.com/MatiasAbregu">@MatiasAbregu</a>)
