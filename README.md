@@ -26,6 +26,7 @@ El proyecto fue realizado para concursar en la hackacode, un evento realizado po
 - Postman
 - PhpMyAdmin
 - Docker
+  
 <b>~ Servidor usado ~</b>
 - DonWeb
 
