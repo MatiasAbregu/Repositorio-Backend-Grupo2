@@ -21,11 +21,11 @@ El proyecto fue realizado para concursar en la hackacode, un evento realizado po
 - JUnit y Mockito
 - MySQL
 
-<b>~ Editores e IDEs utilizados ~</b>
+<b>~ Editores, IDEs y herramientas utilizadas ~</b>
 - NetBeans 21
 - Postman
 - PhpMyAdmin
-
+- Docker
 <b>~ Servidor usado ~</b>
 - DonWeb
 
