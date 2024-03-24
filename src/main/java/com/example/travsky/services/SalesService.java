@@ -130,7 +130,7 @@ public class SalesService {
         salesRepository.delete(s);
         
         Map<String, Boolean> response = new HashMap<>();
-        response.put("¡Datos personales del empleado eliminados con éxito!", Boolean.TRUE);
+        response.put("¡Datos de la venta eliminados con éxito!", Boolean.TRUE);
 
         return response;
     }

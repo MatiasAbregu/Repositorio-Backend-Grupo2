@@ -1,4 +1,4 @@
-package com.example.travsky.controllers;
+    package com.example.travsky.controllers;
 
 import com.example.travsky.models.*;
 import com.example.travsky.services.SalesService;
@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
  * Controlador para la gestión de ventas en la aplicación.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class ControllerSales {
     
     @Autowired

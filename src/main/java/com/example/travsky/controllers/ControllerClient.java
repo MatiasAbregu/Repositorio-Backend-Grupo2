@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
  * Controlador para la gestión de clientes en la aplicación.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class ControllerClient {
 
     @Autowired

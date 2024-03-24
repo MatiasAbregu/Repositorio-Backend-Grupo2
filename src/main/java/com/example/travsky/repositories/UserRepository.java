@@ -1,6 +1,7 @@
 package com.example.travsky.repositories;
 
 import com.example.travsky.models.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,11 @@ public interface UserRepository extends JpaRepository<User, Integer>{
      * @return Un Optional que contiene el usuario si se encuentra, o un Optional vacío si no se encuentra.
      */
     Optional<User> findByUsername(String username);
+    
+    /**
+     * Busca todos los usuarios por un nombre de usuario.
+     * @param username Nombre de usuario a buscar.
+     * @return Un lista que contiene todos los usuarios que coinciden con ese username.
+     */
+    List<User> findAllByUsername(String username);
 }

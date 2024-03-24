@@ -89,7 +89,7 @@ public class PackageService {
         p.setName(request.getPackageInfo().getName());
         com.example.travsky.models.Package pCreated = packageRepository.save(p);
 
-        if (request.getServices().size() > 2) {
+        if (request.getServices().size() > 1) {
             for (com.example.travsky.models.Service s : request.getServices()) {
                 ServicePackage sp = new ServicePackage();
                 sp.setPackageName(p);

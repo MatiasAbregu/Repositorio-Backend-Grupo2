@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatusCode;
  * Controlador para la gestión de paquetes en la aplicación.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class ControllerPackages {
 
     @Autowired

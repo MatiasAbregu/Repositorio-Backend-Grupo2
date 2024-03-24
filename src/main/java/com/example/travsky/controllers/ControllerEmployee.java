@@ -1,13 +1,11 @@
 package com.example.travsky.controllers;
 
 import com.example.travsky.models.Employee;
-import com.example.travsky.models.Token;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.travsky.services.EmployeeService;
-import com.example.travsky.services.TokenService;
 import com.example.travsky.views.EmployeeView;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.http.HttpStatusCode;
@@ -16,14 +14,10 @@ import org.springframework.http.HttpStatusCode;
  * Controlador para la gestión de empleados en la aplicación.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class ControllerEmployee {
 
     @Autowired
     private EmployeeService employeeService;
-
-    @Autowired
-    private TokenService tokenService;
 
     /**
      * Obtiene todos los empleados con información básica (Ver más en Views).
@@ -71,7 +65,7 @@ public class ControllerEmployee {
     @PostMapping("/auth/employees")
     private ResponseEntity<?> createEmployee(@RequestBody Employee request) {
         try {
-            return ResponseEntity.ok(tokenService.registerEmployee(request, 0));
+            return ResponseEntity.ok(employeeService.registerEmployee(request, 0));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(e.getMessage());
         }
@@ -82,11 +76,11 @@ public class ControllerEmployee {
      *
      * @param dni DNI del usuario existente.
      * @param request La información del empleado a crear.
-     * @return El token generado para el empleado creado.
+     * @return ResponseEntity con el empleado creado.
      */
     @PostMapping("/auth/employees/{dni}")
-    private Token createEmployeeAndLinkWithExistPerson(@PathVariable int dni, @RequestBody Employee request) {
-        return tokenService.registerEmployee(request, dni);
+    private ResponseEntity<Employee> createEmployeeAndLinkWithExistPerson(@PathVariable int dni, @RequestBody Employee request) {
+        return ResponseEntity.ok(employeeService.registerEmployee(request, dni));
     }
 
     /**

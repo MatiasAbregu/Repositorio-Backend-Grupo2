@@ -3,11 +3,10 @@ package com.example.travsky.controllers;
 import com.example.travsky.models.Person;
 import com.example.travsky.models.Token;
 import com.example.travsky.models.User;
-import com.example.travsky.services.TokenService;
+import com.example.travsky.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,11 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
  * Controlador para la gestión de usuarios en la aplicación.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class ControllerUsers {
 
     @Autowired
-    private TokenService tokenService;
+    private UserService userService;
 
     /**
      * Inicio de sesión de un usuario.
@@ -31,7 +29,7 @@ public class ControllerUsers {
     @PostMapping("/user/login")
     private ResponseEntity<Token> getUser(@RequestBody User request) {
         try {
-            return ResponseEntity.ok(tokenService.login(request));
+            return ResponseEntity.ok(userService.login(request));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(400)).build();
         }
@@ -40,13 +38,13 @@ public class ControllerUsers {
     /**
      * Registra un nuevo usuario.
      * @param request La información del nuevo usuario.
-     * @return ResponseEntity con el token de acceso si el registro es exitoso,
+     * @return ResponseEntity con la persona creada,
      * o un ResponseEntity con el código de estado 400 si ocurre un error durante el registro.
      */
     @PostMapping("/user")
-    private ResponseEntity<Token> createUser(@RequestBody Person request) {
+    private ResponseEntity<Person> createUser(@RequestBody Person request) {
         try {
-            return ResponseEntity.ok(tokenService.register(request));
+            return ResponseEntity.ok(userService.register(request));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(400)).build();
         }

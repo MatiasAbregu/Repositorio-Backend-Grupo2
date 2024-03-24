@@ -13,7 +13,6 @@ import com.example.travsky.services.ServiceService;
  * @author Matias
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class ControllerServices {  
     
     @Autowired

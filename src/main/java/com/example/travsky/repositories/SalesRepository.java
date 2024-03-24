@@ -1,6 +1,8 @@
 package com.example.travsky.repositories;
 
+import com.example.travsky.models.Employee;
 import com.example.travsky.models.Sales;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -9,4 +11,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SalesRepository extends JpaRepository<Sales, Integer>{
     
+    /**
+     * Busca todos las ventas realizadas por el empleado recibido por parametros.
+     * @param employee Empledo a buscar.
+     * @return Un lista que contiene todas las ventas realizadas por el empleado.
+     */
+    List<Sales> findAllByEmployee(Employee employee);
 }
