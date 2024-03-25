@@ -22,7 +22,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry){
                 registry.addMapping("/**")
-                        .allowedOrigins("http://0.0.0.0", "http://localhost:5173") // Orígenes permitidos
+                        .allowedOrigins("http://0.0.0.0", "http://localhost:5173", 
+                                "http://149.50.137.162:5173", "http://vps-3991849-x.dattaweb.com:5173") // Orígenes permitidos
                         .allowedMethods("*") // Métodos HTTP permitidos
                         .allowedHeaders("*") // Encabezados permitidos
                         .allowCredentials(true); // Permitir credenciales
